@@ -1,7 +1,7 @@
 name: Publish Docker image
 env:
   DEPLOY_PACKAGE_NAME : "ansible-container-${{ github.sha }}"
-  DEPLOY_VERSION : "v0.0.7"
+  DEPLOY_VERSION : "v0.0.8"
 
 #on:
 #  release:
@@ -10,6 +10,8 @@ env:
 on:
   push:
     branches: [master]
+  tags:
+      - 'v*'  
 
 jobs:
   push_to_registries:
