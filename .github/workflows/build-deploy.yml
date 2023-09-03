@@ -1,7 +1,7 @@
 name: Publish Docker image
 env:
   DEPLOY_PACKAGE_NAME : "ansible-container-${{ github.sha }}"
-  DEPLOY_VERSION : "v0.0.8"
+  DEPLOY_VERSION : "v0.0.9"
 
 #on:
 #  release:
@@ -52,7 +52,7 @@ jobs:
           context: .
           push: true          
           tags: |
-           ghcr.io/${{ github.repository }}:v0.0.7
+           ghcr.io/${{ github.repository }}:${{ env.DEPLOY_VERSION }}
            ghcr.io/${{ github.repository }}:latest
 
       #- name: 10. Adding Known Hosts
