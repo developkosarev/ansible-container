@@ -1,6 +1,6 @@
 name: Publish Docker image
 env:
-  DEPLOY_PACKAGE_NAME : "v:${{ github.sha }}"
+  DEPLOY_PACKAGE_NAME : "v${{ github.sha }}"
 
 #on:
 #  release:
@@ -48,7 +48,7 @@ jobs:
           context: .
           push: true          
           tags: |
-           ghcr.io/${{ github.repository }}:${{ env.DEPLOY_PACKAGE_NAME }}
+           ghcr.io/${{ github.repository }}:v0.0.6
            ghcr.io/${{ github.repository }}:latest
 
       #- name: Build and push Docker images
