@@ -50,10 +50,12 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          push: true          
-          tags: |
-           ghcr.io/${{ github.repository }}:${{ env.DEPLOY_VERSION }}
-           ghcr.io/${{ github.repository }}:latest
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          #tags: |
+          # ghcr.io/${{ github.repository }}:${{ env.DEPLOY_VERSION }}
+          # ghcr.io/${{ github.repository }}:latest
 
       #- name: 10. Adding Known Hosts
       #  run : ssh-keyscan -p ${{ secrets.SSH_PORT }} -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts     
