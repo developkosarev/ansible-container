@@ -12,3 +12,5 @@ docker run -d -p 3000:3000 --name ansible-container ansible-container:v0.1
 
 ## Security
 https://github.com/users/developkosarev/packages/container/ansible-container/settings
+## Build
+https://event-driven.io/en/how_to_buid_and_push_docker_image_with_github_actions/

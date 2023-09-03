@@ -1,4 +1,6 @@
 name: Publish Docker image
+env:
+  DEPLOY_PACKAGE_NAME : "v:${{ github.sha }}"
 
 #on:
 #  release:
@@ -30,16 +32,24 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: |
-            developkosarev/ansible-container
+          images: |            
             ghcr.io/${{ github.repository }}
+
+      - name: Execute few commands
+        run : |        
+          echo "Hello Message1"
+          echo "Deploy package name: ${{ env.DEPLOY_PACKAGE_NAME }}"
+          echo "Tags: ${{ steps.meta.outputs.tags }}"
+          echo "Labels: ${{ steps.meta.outputs.labels }}"
       
       - name: Build and push Docker images
         uses: docker/build-push-action@v4
         with:
           context: .
           push: true          
-          tags: ghcr.io/developkosarev/ansible-container:v0.0.5
+          tags: |
+           ghcr.io/${{ github.repository }}:${{ env.DEPLOY_PACKAGE_NAME }}
+           ghcr.io/${{ github.repository }}:latest
 
       #- name: Build and push Docker images
       #  uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
