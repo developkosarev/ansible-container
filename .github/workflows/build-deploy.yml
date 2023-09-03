@@ -1,6 +1,7 @@
 name: Publish Docker image
 env:
-  DEPLOY_PACKAGE_NAME : "v${{ github.sha }}"
+  DEPLOY_PACKAGE_NAME : "ansible-container-${{ github.sha }}"
+  DEPLOY_VERSION : "v0.0.7"
 
 #on:
 #  release:
@@ -18,38 +19,42 @@ jobs:
       packages: write
       contents: read
     steps:
-      - name: Check out the repo
+      - name: 01. Check out the repo
         uses: actions/checkout@v3
             
-      - name: Log in to the Container registry
+      - name: 02. Log in to the Container registry
         uses: docker/login-action@v2
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       
-      - name: Extract metadata (tags, labels) for Docker
+      - name: 03. Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v4
         with:
           images: |            
             ghcr.io/${{ github.repository }}
 
-      - name: Execute few commands
+      - name: 04. Execute few commands
         run : |        
           echo "Hello Message1"
           echo "Deploy package name: ${{ env.DEPLOY_PACKAGE_NAME }}"
+          echo "Deploy version: ${{ env.DEPLOY_VERSION }}"
           echo "Tags: ${{ steps.meta.outputs.tags }}"
           echo "Labels: ${{ steps.meta.outputs.labels }}"
       
-      - name: Build and push Docker images
+      - name: 05. Build and push Docker images
         uses: docker/build-push-action@v4
         with:
           context: .
           push: true          
           tags: |
-           ghcr.io/${{ github.repository }}:v0.0.6
+           ghcr.io/${{ github.repository }}:v0.0.7
            ghcr.io/${{ github.repository }}:latest
+
+      #- name: 10. Adding Known Hosts
+      #  run : ssh-keyscan -p ${{ secrets.SSH_PORT }} -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts     
 
       #- name: Build and push Docker images
       #  uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
